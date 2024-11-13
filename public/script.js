@@ -12,8 +12,7 @@ async function fetchListings() {
 
     const response = await fetch("https://api.hostaway.com/v1/listings", {
       headers: {
-        "Authorization": `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI4MDA2NiIsImp0aSI6IjZkODk5MWMyZTI4MGQ0NDg3NmNhNDUyZmYxMWU5ZTcxNDFhNDJhMGIzMmViNzA3ZTQyMDFhYjY4OWQ3NDc2Yjk0NDZlZjA2NTZhY2QzMDkxIiwiaWF0IjoxNzIzOTk0NTQxLjcxOTMyNiwibmJmIjoxNzIzOTk0NTQxLjcxOTMyNywiZXhwIjoyMDM5NTI3MzQxLjcxOTMzMSwic3ViIjoiIiwic2NvcGVzIjpbImdlbmVyYWwiXSwic2VjcmV0SWQiOjM5NDM0fQ.aCE9HtgvxqTLuftdSe3I75s8DocQoBz949WG-NTot-qIzWRmruShmqkZNs8rtA_CyNNocOr_fahkXZBK3hHxQ4G6QxX9z8acQ_mJ68Wz5YKT39A6gAmu--5Ux_W6xdMpzb8J6f4SrdDJneC3RIWweT3KvZ832VIm1AmQDgHgJ7k
-` // Replace with your actual API key
+        "Authorization": `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI4MDA2NiIsImp0aSI6IjZkODk5MWMyZTI4MGQ0NDg3NmNhNDUyZmYxMWU5ZTcxNDFhNDJhMGIzMmViNzA3ZTQyMDFhYjY4OWQ3NDc2Yjk0NDZlZjA2NTZhY2QzMDkxIiwiaWF0IjoxNzIzOTk0NTQxLjcxOTMyNiwibmJmIjoxNzIzOTk0NTQxLjcxOTMyNywiZXhwIjoyMDM5NTI3MzQxLjcxOTMzMSwic3ViIjoiIiwic2NvcGVzIjpbImdlbmVyYWwiXSwic2VjcmV0SWQiOjM5NDM0fQ.aCE9HtgvxqTLuftdSe3I75s8DocQoBz949WG-NTot-qIzWRmruShmqkZNs8rtA_CyNNocOr_fahkXZBK3hHxQ4G6QxX9z8acQ_mJ68Wz5YKT39A6gAmu--5Ux_W6xdMpzb8J6f4SrdDJneC3RIWweT3KvZ832VIm1AmQDgHgJ7k`
       }
     });
 
@@ -22,10 +21,15 @@ async function fetchListings() {
     }
 
     const data = await response.json();
-    console.log("Raw Fetched Data:", data); // Log raw data
+    console.log("Raw Fetched Data:", data); // Log the raw data for debugging
 
-    // Check if data contains a 'data' array property
-    if (data.data && Array.isArray(data.data)) {
+    // Check if the data is an array directly or if it's within a property like 'data'
+    if (Array.isArray(data)) {
+      allListings = data.map((listing) => ({
+        ...listing,
+        type: assignTypeToListing(listing.id),
+      }));
+    } else if (data && data.data && Array.isArray(data.data)) {
       allListings = data.data.map((listing) => ({
         ...listing,
         type: assignTypeToListing(listing.id),
@@ -36,7 +40,7 @@ async function fetchListings() {
       return;
     }
 
-    container.innerHTML = "";
+    container.innerHTML = ""; // Clear existing listings
 
     if (allListings.length > 0) {
       displayListings(allListings); // Display all listings initially
