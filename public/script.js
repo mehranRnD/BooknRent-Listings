@@ -1,4 +1,36 @@
-let allListings = []; // Start with an empty array
+let allListings = [
+  { id: 288675, type: 'studio' },
+  { id: 288676, type: '3br' },
+  { id: 288677, type: '2br' },
+  { id: 288678, type: '1br' },
+  { id: 288679, type: '1br' },
+  { id: 288681, type: '1br' },
+  { id: 288682, type: 'studio' },
+  { id: 288683, type: '2br' },
+  { id: 288684, type: '2br' },
+  { id: 288685, type: '2br' },
+  { id: 288686, type: '3br' },
+  { id: 288687, type: '2br' },
+  { id: 288688, type: '2br' },
+  { id: 288689, type: '2br' },
+  { id: 288690, type: 'studio' },
+  { id: 288691, type: '1br' },
+  { id: 288723, type: '1br' },
+  { id: 288724, type: '2br' },
+  { id: 288726, type: '1br' },
+  { id: 288977, type: '2br' },
+  { id: 305055, type: '2br' },
+  { id: 305069, type: '1br' },
+  { id: 305327, type: '2br' },
+  { id: 306032, type: '1br' },
+  { id: 306543, type: '2br' },
+  { id: 307143, type: '1br' },
+  { id: 309909, type: '2br' },
+  { id: 323227, type: '2br' },
+  { id: 323229, type: 'studio' },
+  { id: 323258, type: '1br' },
+  { id: 323261, type: 'studio' }
+];
 
 async function fetchListings() {
   const container = document.getElementById("listing-container");
@@ -9,38 +41,22 @@ async function fetchListings() {
 
   try {
     console.log("Fetching data from the server...");
-
-    const response = await fetch("https://api.hostaway.com/v1/listings", {
-      headers: {
-        "Authorization": `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI4MDA2NiIsImp0aSI6IjZkODk5MWMyZTI4MGQ0NDg3NmNhNDUyZmYxMWU5ZTcxNDFhNDJhMGIzMmViNzA3ZTQyMDFhYjY4OWQ3NDc2Yjk0NDZlZjA2NTZhY2QzMDkxIiwiaWF0IjoxNzIzOTk0NTQxLjcxOTMyNiwibmJmIjoxNzIzOTk0NTQxLjcxOTMyNywiZXhwIjoyMDM5NTI3MzQxLjcxOTMzMSwic3ViIjoiIiwic2NvcGVzIjpbImdlbmVyYWwiXSwic2VjcmV0SWQiOjM5NDM0fQ.aCE9HtgvxqTLuftdSe3I75s8DocQoBz949WG-NTot-qIzWRmruShmqkZNs8rtA_CyNNocOr_fahkXZBK3hHxQ4G6QxX9z8acQ_mJ68Wz5YKT39A6gAmu--5Ux_W6xdMpzb8J6f4SrdDJneC3RIWweT3KvZ832VIm1AmQDgHgJ7k`
-      }
-    });
+    const response = await fetch("http://localhost:3000/api/listings");
 
     if (!response.ok) {
       throw new Error("Failed to fetch data from Hostaway");
     }
 
-    const data = await response.json();
-    console.log("Raw Fetched Data:", data); // Log the raw data for debugging
+    const listings = await response.json();
+    console.log("All Fetched Data:", listings);
 
-    // Check if the data is an array directly or if it's within a property like 'data'
-    if (Array.isArray(data)) {
-      allListings = data.map((listing) => ({
-        ...listing,
-        type: assignTypeToListing(listing.id),
-      }));
-    } else if (data && data.data && Array.isArray(data.data)) {
-      allListings = data.data.map((listing) => ({
-        ...listing,
-        type: assignTypeToListing(listing.id),
-      }));
-    } else {
-      console.error("Fetched data is not in the expected format:", data);
-      container.innerHTML = "Error: Data format is incorrect.";
-      return;
-    }
+    // Assign types based on listing IDs or data
+    allListings = listings.map((listing) => ({
+      ...listing,
+      type: assignTypeToListing(listing.id), // Assign type based on listing ID
+    }));
 
-    container.innerHTML = ""; // Clear existing listings
+    container.innerHTML = "";
 
     if (allListings.length > 0) {
       displayListings(allListings); // Display all listings initially
