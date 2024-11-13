@@ -1,36 +1,4 @@
-let allListings = [
-  { id: 288675, type: 'studio' },
-  { id: 288676, type: '3br' },
-  { id: 288677, type: '2br' },
-  { id: 288678, type: '1br' },
-  { id: 288679, type: '1br' },
-  { id: 288681, type: '1br' },
-  { id: 288682, type: 'studio' },
-  { id: 288683, type: '2br' },
-  { id: 288684, type: '2br' },
-  { id: 288685, type: '2br' },
-  { id: 288686, type: '3br' },
-  { id: 288687, type: '2br' },
-  { id: 288688, type: '2br' },
-  { id: 288689, type: '2br' },
-  { id: 288690, type: 'studio' },
-  { id: 288691, type: '1br' },
-  { id: 288723, type: '1br' },
-  { id: 288724, type: '2br' },
-  { id: 288726, type: '1br' },
-  { id: 288977, type: '2br' },
-  { id: 305055, type: '2br' },
-  { id: 305069, type: '1br' },
-  { id: 305327, type: '2br' },
-  { id: 306032, type: '1br' },
-  { id: 306543, type: '2br' },
-  { id: 307143, type: '1br' },
-  { id: 309909, type: '2br' },
-  { id: 323227, type: '2br' },
-  { id: 323229, type: 'studio' },
-  { id: 323258, type: '1br' },
-  { id: 323261, type: 'studio' }
-];
+let allListings = []; // Start with an empty array
 
 async function fetchListings() {
   const container = document.getElementById("listing-container");
@@ -56,24 +24,13 @@ async function fetchListings() {
     const data = await response.json();
     console.log("Raw Fetched Data:", data); // Log raw data
 
-    // Check if listings is an array or an object with a nested listings array
-    let allListings = [];
-
-    // Check if data is an array
-    if (Array.isArray(data)) {
-      allListings = data.map((listing) => ({
-        ...listing,
-        type: assignTypeToListing(listing.id),
-      }));
-    }
-    // Check if data is an object with 'data' array property
-    else if (data.data && Array.isArray(data.data)) {
+    // Check if data contains a 'data' array property
+    if (data.data && Array.isArray(data.data)) {
       allListings = data.data.map((listing) => ({
         ...listing,
         type: assignTypeToListing(listing.id),
       }));
-    }
-    else {
+    } else {
       console.error("Fetched data is not in the expected format:", data);
       container.innerHTML = "Error: Data format is incorrect.";
       return;
