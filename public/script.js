@@ -41,7 +41,13 @@ async function fetchListings() {
 
   try {
     console.log("Fetching data from the server...");
-    const response = await fetch("http://localhost:3000/api/listings");
+    
+    // Change the URL to fetch data from the Hostaway API
+    const response = await fetch("https://api.hostaway.com/v1/listings", {
+      headers: {
+        "Authorization": `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI4MDA2NiIsImp0aSI6IjZkODk5MWMyZTI4MGQ0NDg3NmNhNDUyZmYxMWU5ZTcxNDFhNDJhMGIzMmViNzA3ZTQyMDFhYjY4OWQ3NDc2Yjk0NDZlZjA2NTZhY2QzMDkxIiwiaWF0IjoxNzIzOTk0NTQxLjcxOTMyNiwibmJmIjoxNzIzOTk0NTQxLjcxOTMyNywiZXhwIjoyMDM5NTI3MzQxLjcxOTMzMSwic3ViIjoiIiwic2NvcGVzIjpbImdlbmVyYWwiXSwic2VjcmV0SWQiOjM5NDM0fQ.aCE9HtgvxqTLuftdSe3I75s8DocQoBz949WG-NTot-qIzWRmruShmqkZNs8rtA_CyNNocOr_fahkXZBK3hHxQ4G6QxX9z8acQ_mJ68Wz5YKT39A6gAmu--5Ux_W6xdMpzb8J6f4SrdDJneC3RIWweT3KvZ832VIm1AmQDgHgJ7k` // Replace with your API key
+      }
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch data from Hostaway");
