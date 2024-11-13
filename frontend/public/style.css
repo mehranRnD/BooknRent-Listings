@@ -1,0 +1,121 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.listing {
+  margin-block-end: 20px;
+}
+
+/* Fixed card size */
+.card {
+  border: none;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+  transition: transform 0.3s ease;
+  block-size: 400px; /* Set a fixed height for the card */
+  display: flex;
+  flex-direction: column; /* Ensures content is stacked vertically */
+  overflow: hidden; /* Prevents overflow when content exceeds the fixed height */
+  position: relative;
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* Card content styling */
+.card-img-top {
+  block-size: 200px;
+  object-fit: cover;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+}
+
+.card-body {
+  padding: 15px;
+  flex-grow: 1; /* Ensures the body grows to fill remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Read More link styling */
+.read-more-link {
+  position: absolute;
+  inset-block-end: 1rem;  /* Adjust vertical position */
+  inset-inline-end: 1rem;   /* Shift it to the right side */
+  font-size: 0.9rem;
+  color: #007bff;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Hover effect on Read More link */
+.card:hover .read-more-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.read-more-link:hover {
+  text-decoration: underline;
+}
+
+.card-title {
+  text-align: center;
+}
+
+/* Fade-in effect for listings */
+.listing {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.listing.show {
+  opacity: 1;
+}
+
+/* Button Styles */
+#filter-buttons {
+  margin-block-end: 20px;
+}
+
+#filter-buttons button {
+  margin-inline-end: 10px;
+}
+
+.container {
+  margin-block-start: 20px;
+  text-align: center;
+}
+
+/* Media Queries */
+
+/* For small screens, stack buttons vertically */
+@media (max-width: 767px) {
+  #filter-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #filter-buttons button {
+    margin-block-end: 10px; /* Add some space between stacked buttons */
+    inline-size: 80%; /* Make buttons take more width on smaller screens */
+  }
+}
+
+/* For medium and larger screens, keep buttons horizontal */
+@media (min-width: 768px) {
+  #filter-buttons {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  #filter-buttons button {
+    margin-inline-end: 10px;
+  }
+}
