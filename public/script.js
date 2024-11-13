@@ -53,28 +53,28 @@ async function fetchListings() {
       throw new Error("Failed to fetch data from Hostaway");
     }
 
-    const listings = await response.json();
-    console.log("All Fetched Data:", listings); // Log the entire data structure
+    const data = await response.json();
+    console.log("Raw Fetched Data:", data); // Log raw data
 
     // Check if listings is an array or an object with a nested listings array
     let allListings = [];
 
-    // If listings is an array directly
-    if (Array.isArray(listings)) {
-      allListings = listings.map((listing) => ({
+    // Check if data is an array
+    if (Array.isArray(data)) {
+      allListings = data.map((listing) => ({
         ...listing,
-        type: assignTypeToListing(listing.id), // Assign type based on listing ID
+        type: assignTypeToListing(listing.id),
       }));
     }
-    // If listings is an object containing an array property (like 'data' or 'results')
-    else if (listings.data && Array.isArray(listings.data)) {
-      allListings = listings.data.map((listing) => ({
+    // Check if data is an object with 'data' array property
+    else if (data.data && Array.isArray(data.data)) {
+      allListings = data.data.map((listing) => ({
         ...listing,
-        type: assignTypeToListing(listing.id), // Assign type based on listing ID
+        type: assignTypeToListing(listing.id),
       }));
     }
     else {
-      console.error("Fetched data is not in the expected format:", listings);
+      console.error("Fetched data is not in the expected format:", data);
       container.innerHTML = "Error: Data format is incorrect.";
       return;
     }
